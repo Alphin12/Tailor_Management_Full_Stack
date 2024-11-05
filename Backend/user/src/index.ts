@@ -1,9 +1,19 @@
-import {Schema, model, Document} from 'mongoose';
+import express from 'express';
+import connectDB from './config/database';
+import UserRoute from './route/UserRoute';
+import dotenv from 'dotenv';
+import { connect } from 'mongoose';
+import cors from 'cors'
 
-export interface UserInterface extends Document{
-    userId: string;
-    userRole: number;//0- admin, 1- customer, 2- tailor
-    email: string;
-}
+const app = express();
+const PORT = process.env.PORT || 5005;
 
-const UserSceham = new Schema<User>
+app.use(express.json());
+app.use(cors());
+connectDB();
+
+app.use('/api/user', UserRoute);
+
+app.listen( PORT, () => {
+    console.log(`Server is listening on http://localhost:${PORT}`);
+}); 
